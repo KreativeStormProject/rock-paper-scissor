@@ -61,7 +61,6 @@ const game = () => {
       ` Round ${round++}; Enter your choice (Rock, Paper, or Scissors) OR click cancel to end the game: `
     );
 
-    console.log(playerSelection);
     // Check if the user cancels
     if (playerSelection === null) {
       console.log("Game ended. You cancelled the game.");
@@ -76,12 +75,9 @@ const game = () => {
       playerSelection = prompt(
         "Enter your choice (Rock, Paper, or Scissors):"
       ).toLowerCase();
-      console.log(playerSelection);
     }
 
     const computerSelection = computerPlay();
-    console.log(computerSelection);
-
     const result = playRound(playerSelection, computerSelection);
     console.log(result);
 
