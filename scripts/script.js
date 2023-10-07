@@ -12,7 +12,7 @@ const computerPlay = () => {
 };
 
 const playerChoice = () => {
-  let input = prompt(`Round ${round}: Enter your choice (Rock, Paper, or Scissors):`); 
+  let input = prompt(`Round ${round}: Enter your choice (Rock, Paper, or Scissors): OR click cancel to end the game`); 
 
   // Check if the user cancels
   if (input === null) {
@@ -25,7 +25,7 @@ const playerChoice = () => {
   // Check for invalid input
   while (!choices.includes(input)) {
     alert("Invalid input. Please enter Rock, Paper, or Scissors.");
-    input = prompt(`Round ${round}: Enter your choice (Rock, Paper, or Scissors):`); 
+    input = prompt(`Round ${round}: Enter your choice (Rock, Paper, or Scissors): OR click cancel to end the game`); 
     input = input.trim().toLowerCase();
   }
 
