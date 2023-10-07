@@ -3,18 +3,38 @@ const red = "\x1b[31m"; // Red text
 const green = "\x1b[32m"; // Green text
 const reset = "\x1b[0m"; // Reset text color
 
+const choices = ["rock", "paper", "scissors"];
+let round = 1; 
+
 const computerPlay = () => {
-  const choices = ["Rock", "Paper", "Scissors"];
   const randomIndex = Math.floor(Math.random() * choices.length);
   return choices[randomIndex];
 };
 
+const playerChoice = () => {
+  let input = prompt(`Round ${round}: Enter your choice (Rock, Paper, or Scissors):`); 
+
+  // Check if the user cancels
+  if (input === null) {
+    console.log("Game ended. You cancelled the game.");
+    return;
+  }
+
+  input = input.trim().toLowerCase();
+
+  // Check for invalid input
+  while (!choices.includes(input)) {
+    alert("Invalid input. Please enter Rock, Paper, or Scissors.");
+    input = prompt(`Round ${round}: Enter your choice (Rock, Paper, or Scissors):`); 
+    input = input.trim().toLowerCase();
+  }
+
+  return input;
+};
+
 const playRound = (playerSelection, computerSelection) => {
-  playerSelection = playerSelection.toLowerCase();
-  computerSelection = computerSelection.toLowerCase();
-  
   if (playerSelection === computerSelection) {
-    return "It's a tie! " + playerSelection + " equals " + computerSelection;
+    return `Round ${round}: It's a tie! ${playerSelection} equals ${computerSelection}`; 
   } else if (
     (playerSelection === "rock" && computerSelection === "scissors") ||
     (playerSelection === "scissors" && computerSelection === "paper") ||
@@ -22,62 +42,40 @@ const playRound = (playerSelection, computerSelection) => {
   ) {
     return (
       green +
-      "You win! " +
-      playerSelection +
-      " beats " +
-      computerSelection +
+      `Round ${round}: You win! ${playerSelection} beats ${computerSelection}` +
       reset
-    );
+    ); 
   } else {
     return (
       red +
-      "You lose! " +
-      computerSelection +
-      " beats " +
-      playerSelection +
+      `Round ${round}: You lose! ${computerSelection} beats ${playerSelection}` +
       reset
-    );
+    ); 
+  }
+};
+
+const determineWinner = (playerScore, computerScore) => {
+  if (playerScore > computerScore) {
+    return `You win the game! Your score: ${playerScore} Computer's score: ${computerScore}`;
+  } else if (playerScore < computerScore) {
+    return `You lose the game! Your score: ${playerScore} Computer's score: ${computerScore}`;
+  } else {
+    return `It's a tie! Your score: ${playerScore} Computer's score: ${computerScore}`;
   }
 };
 
 const game = () => {
   let playerScore = 0;
   let computerScore = 0;
-  let round = 1;
-  const validChoices = ["rock", "paper", "scissors"];
-
-  function playAgain() {
-    const playAgainChoice = prompt(
-      "Do you want to play again? (yes/no)"
-    ).toLowerCase();
-    return playAgainChoice === "yes";
-  }
 
   alert(
-    " Welcome to the deadly Rock, Paper or Scissors Game. Warning!!!You might lose your laptop to Branko if you fail. hahahahaha"
+    "Welcome to the deadly Rock, Paper or Scissors Game. Warning!!! You might lose your laptop to Branko if you fail. hahahahaha"
   );
+
   for (let i = 0; i < 5; i++) {
-    let playerSelection = prompt(
-      ` Round ${round++}; Enter your choice (Rock, Paper, or Scissors) OR click cancel to end the game: `
-    );
-
-    // Check if the user cancels
-    if (playerSelection === null) {
-      console.log("Game ended. You cancelled the game.");
-      return; 
-    }
-
-    playerSelection = playerSelection.toLowerCase();
-
-    // Check for invalid input
-    while (!validChoices.includes(playerSelection)) {
-      alert("Invalid input. Please enter Rock, Paper, or Scissors.");
-      playerSelection = prompt(
-        "Enter your choice (Rock, Paper, or Scissors):"
-      ).toLowerCase();
-    }
-
+    const playerSelection = playerChoice();
     const computerSelection = computerPlay();
+
     const result = playRound(playerSelection, computerSelection);
     console.log(result);
 
@@ -86,30 +84,12 @@ const game = () => {
     } else if (result.includes("lose")) {
       computerScore++;
     }
+
+    round++;
   }
 
-  if (playerScore > computerScore) {
-    console.log(
-      "You win the game! Your score: " +
-        playerScore +
-        " Computer's score: " +
-        computerScore
-    );
-  } else if (playerScore < computerScore) {
-    console.log(
-      "You lose the game! Your score: " +
-        playerScore +
-        " Computer's score: " +
-        computerScore
-    );
-  } else {
-    console.log(
-      "It's a tie! Your score: " +
-        playerScore +
-        " Computer's score: " +
-        computerScore
-    );
-  }
+  const gameResult = determineWinner(playerScore, computerScore);
+  console.log(gameResult);
 };
 
 game();
